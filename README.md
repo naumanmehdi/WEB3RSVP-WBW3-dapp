@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+# WEB3RSVP-Dapp
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project demonstrates a basic development of RSVP Dapp. 
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+Smart Contract deployed at 0xbF38c9a0d26F2e50c25e50f1abd02B41d88a6AD7
