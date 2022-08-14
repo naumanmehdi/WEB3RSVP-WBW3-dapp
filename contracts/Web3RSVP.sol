@@ -16,7 +16,7 @@ contract Web3RSVP {
 
     event NewRSVP (bytes32 eventId, address attendeeAddress);
     event ConfirmAttendee (bytes32 eventId, address confirmAttendee);
-    event DepositsPaidOut (btyes32 eventId);
+    event DepositsPaidOut (bytes32 eventId);
 
 
     struct CreateEvent {
@@ -48,7 +48,7 @@ contract Web3RSVP {
                 address(this),
                 eventTimestamp,
                 deposit,
-                maxcapacity
+                maxCapacity
             )
         );
 
@@ -70,8 +70,8 @@ contract Web3RSVP {
 
        // emitting the events 
        emit NewEventCreated(
-            eventID,
-            creatorAddress,
+            eventId,
+            msg.sender,
             eventTimestamp,
             maxCapacity,
             deposit,
@@ -85,7 +85,7 @@ contract Web3RSVP {
         CreateEvent storage myEvent = idToEvent[eventId];
 
         // transfer deposit to our contract/require that they send in enough ETH to cover 
-        require(msg.value == myEvent.deposit. "NOT ENOUGH");
+        require(msg.value == myEvent.deposit, "NOT ENOUGH");
 
         // require that event hasn't already happened
         require(block.timestamp <= myEvent.eventTimestamp, "ALREADY HAPPENED");
@@ -107,16 +107,16 @@ contract Web3RSVP {
     //Check in Attendees
     function confirmAttendee(bytes32 eventId, address attendee) public {
         // look up event from our struct using the event id 
-        CreateEvent storage myEvent = idToEvent[eventIs];
+        CreateEvent storage myEvent = idToEvent[eventId];
 
        // require that only host should be able to check in people 
        require(msg.sender == myEvent.eventOwner, "NOT AUTHORIZED");
 
        // require that attendee trying to check in actully RSVP'd
-       address revpConfirm;
+       address rsvpConfirm;
 
-       for (uint8 i = 0; i <myEventRSVP.length; i++) {
-           if(myEvent.RSVP[i] == attendee){
+       for (uint8 i = 0; i <myEvent.confirmedRSVP.length; i++) {
+           if(myEvent.confirmedRSVP[i] == attendee){
                rsvpConfirm = myEvent.confirmedRSVP[i];
            }
        } 
@@ -143,7 +143,7 @@ contract Web3RSVP {
        } 
        require(sent, "FAILED TO SEND ETH");
 
-       emit ConfirmAttendee(evenId, attendee);
+       emit ConfirmAttendee(eventId, attendee);
     }
 
     // Confrim whole group function 
@@ -186,6 +186,6 @@ contract Web3RSVP {
 
        require(sent, "FAILED TO SEND ETH");
 
-       event DepositsPaidOut(eventId);
+       emit DepositsPaidOut(eventId);
     }
 }
